@@ -13,7 +13,7 @@ import kotlin.coroutines.coroutineContext
 
 private val redditApi = Retrofit.Builder()
     .addConverterFactory(SimpleXmlConverterFactory.create())
-    .baseUrl("https://www.reddit.com/r/popular/")
+    .baseUrl("https://www.reddit.com/")
     .client(OkHttpClient.Builder().build())
     .build()
     .create(ReeditApi::class.java)
