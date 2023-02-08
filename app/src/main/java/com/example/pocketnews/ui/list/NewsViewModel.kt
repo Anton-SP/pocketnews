@@ -1,4 +1,4 @@
-package com.example.pocketnews.ui
+package com.example.pocketnews.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

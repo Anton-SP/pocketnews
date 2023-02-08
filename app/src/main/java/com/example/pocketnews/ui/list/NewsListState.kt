@@ -1,4 +1,4 @@
-package com.example.pocketnews.ui
+package com.example.pocketnews.ui.list
 
 import com.example.pocketnews.data.NewsEntity
 
