@@ -28,6 +28,10 @@ class NewsAdapter():RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         holder.bind(news = news[position])
     }
 
+    fun submitList(data: List<NewsEntity>) {
+        news.addAll(data)
+        notifyDataSetChanged()
+    }
 
 
     inner class NewsViewHolder(private val binding: ItemNewsBinding):RecyclerView.ViewHolder(binding.root){

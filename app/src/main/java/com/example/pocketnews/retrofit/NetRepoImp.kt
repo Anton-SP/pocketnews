@@ -12,15 +12,13 @@ import kotlin.coroutines.coroutineContext
 
 private val redditApi = Retrofit.Builder()
     .addConverterFactory(SimpleXmlConverterFactory.create())
-    .baseUrl("https://www.reddit.com/api/v1/")
+    .baseUrl("https://www.reddit.com/r/popular/")
     .client(OkHttpClient.Builder().build())
     .build()
     .create(ReeditApi::class.java)
 
 
 class NetRepoImp : NewsRepo {
-    override suspend fun getNews(): List<NewsEntity>  {
-        return listOf()
-    }
+    override suspend fun getNews(): List<NewsEntity> = redditApi.getNews().map { it.convertDTOtoNewsEntity() }
 
 }
