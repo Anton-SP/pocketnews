@@ -3,6 +3,7 @@ package com.example.pocketnews.retrofit
 import com.example.pocketnews.data.NewsEntity
 import com.example.pocketnews.data.NewsRepo
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -19,6 +20,8 @@ private val redditApi = Retrofit.Builder()
 
 
 class NetRepoImp : NewsRepo {
-    override suspend fun getNews(): List<NewsEntity> = redditApi.getNews().map { it.convertDTOtoNewsEntity() }
+    override suspend fun getNews(): List<NewsEntity> = withContext(Dispatchers.IO) {
+        redditApi.getNews().map { it.convertDTOtoNewsEntity() }
+    }
 
 }
