@@ -1,5 +1,6 @@
 package com.example.pocketnews.ui.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -25,9 +26,11 @@ class NewsViewModel(
                 )
                 if (news.isEmpty()) {
                     stateFlow.emit(NewsListState.Error("EMPTY LIST"))
+                    Log.d("HAPPY","пустой лист")
                 }
 
             } catch (e: Exception) {
+                Log.d("HAPPY","ошибка" + e.message)
                 stateFlow.emit(NewsListState.Error("ERROR_DATA"))
             }
 

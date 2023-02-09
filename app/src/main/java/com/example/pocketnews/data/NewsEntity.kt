@@ -1,6 +1,6 @@
 package com.example.pocketnews.data
 
 data class NewsEntity (
-   var published : String,
+   var author : String,
    var title: String
         )

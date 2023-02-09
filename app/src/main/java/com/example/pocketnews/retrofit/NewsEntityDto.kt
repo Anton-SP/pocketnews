@@ -3,45 +3,44 @@ package com.example.pocketnews.retrofit
 import android.os.Parcel
 import android.os.Parcelable
 import com.example.pocketnews.data.NewsEntity
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
-
-@Root(name = "entry",strict = false)
+/*
+@Parcelize
 data class NewsEntityDto(
 
-    @Element(name = "published")
+    @SerializedName("approved_at_utc")
     var published: String,
 
-    @Element(name = "title")
+    @SerializedName("title")
     var title: String
 
 ) : Parcelable {
 
-    constructor(parcel: Parcel) : this(
-        parcel.readString().toString(),
-        parcel.readString().toString()
-    ) {
-    }
+    fun convertDtoToNewsEntity() = NewsEntity(published,title)
 
-    fun convertDTOtoNewsEntity() = NewsEntity(published, title)
+}*/
+data class NewsEntityDto(
+    val kind: String,
+    val data: Data,
+)
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(published)
-        parcel.writeString(title)
-    }
+data class Data(
+    val children: List<Children>
+)
 
-    override fun describeContents(): Int {
-        return 0
-    }
+data class Children(
+    val kind: String,
+    val data: Data2
+)
 
-    companion object CREATOR : Parcelable.Creator<NewsEntityDto> {
-        override fun createFromParcel(parcel: Parcel): NewsEntityDto {
-            return NewsEntityDto(parcel)
-        }
+data class Data2(
+    val title: String,
+    val author: String
+)
 
-        override fun newArray(size: Int): Array<NewsEntityDto?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+

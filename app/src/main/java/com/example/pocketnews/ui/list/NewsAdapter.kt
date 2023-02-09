@@ -39,7 +39,7 @@ class NewsAdapter():RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         fun bind(news:NewsEntity) {
             with(binding) {
                 tvTitle.text = news.title
-                tvPublished.text = news.published
+                tvPublished.text = news.author
             }
         }
     }
