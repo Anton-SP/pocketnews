@@ -21,14 +21,15 @@ private val redditApi = Retrofit.Builder()
 class NewsPagingSource : PagingSource<String, NewsEntity>() {
 
     override fun getRefreshKey(state: PagingState<String, NewsEntity>): String? {
-        val anchorPosition =state.anchorPosition?: return null
-        val news = state.closestItemToPosition(anchorPosition)?:return null
+        val anchorPosition = state.anchorPosition ?: return null
+        val news = state.closestItemToPosition(anchorPosition) ?: return null
         return news.name
     }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, NewsEntity> {
         val start = params.key ?: STARTING_KEY
-        val newsDTO = redditApi.getNews()
+
+        val newsDTO = redditApi.getNews(start)
 
 
         return LoadResult.Page(
@@ -39,6 +40,10 @@ class NewsPagingSource : PagingSource<String, NewsEntity>() {
                     it.data.name
                 )
             },
+           /* nextKey = when (start) {
+                STARTING_KEY -> newsDTO.data.after
+                else -> newsDTO.data.after
+            },*/
             nextKey = newsDTO.data.after,
             prevKey = null
         )

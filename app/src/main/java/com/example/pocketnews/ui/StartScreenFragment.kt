@@ -8,14 +8,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.pocketnews.R
 import com.example.pocketnews.app
+import com.example.pocketnews.data.NewsEntity
 import com.example.pocketnews.databinding.FragmentStartScreenBinding
 import com.example.pocketnews.ui.list.NewsAdapter
 import com.example.pocketnews.ui.list.NewsListState
 import com.example.pocketnews.ui.list.NewsViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
@@ -30,14 +33,31 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
         NewsAdapter()
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+      //  initRecycler()
+
+        val item = newsViewModel.items
         initRecycler()
+     //   binding.bindAdapter(newsAdapter = adapter)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                item.collect{
+                    adapter.submitData(it)
+                  //  adapter.notifyDataSetChanged()
+                }
+            }
+        }
+
        // getList()
-        collectListFlow()
+      //  collectListFlow()
 
         binding.fabUpload.setOnClickListener {
-            getList()
+        //    getItems()
+            //getList()
         }
     }
 
@@ -69,6 +89,17 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
         newsViewModel.getNewsList()
     }
 
+    private fun getItems(){
+        val item = newsViewModel.items
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                item.collectLatest {
+                    adapter.submitData(it)
+                }
+            }
+        }
+    }
+
     private fun initRecycler() {
         binding.rvNews.apply {
             adapter = this@StartScreenFragment.adapter
@@ -76,6 +107,13 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
         }
 
 
+    }
+
+    private fun FragmentStartScreenBinding.bindAdapter(newsAdapter: NewsAdapter) {
+        rvNews.adapter = newsAdapter
+        rvNews.layoutManager = LinearLayoutManager(rvNews.context)
+        val decoration = DividerItemDecoration(rvNews.context, DividerItemDecoration.VERTICAL)
+        rvNews.addItemDecoration(decoration)
     }
 
 }

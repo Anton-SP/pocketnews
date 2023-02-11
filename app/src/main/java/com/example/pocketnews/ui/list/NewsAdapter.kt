@@ -2,11 +2,13 @@ package com.example.pocketnews.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketnews.data.NewsEntity
 import com.example.pocketnews.databinding.ItemNewsBinding
 
-class NewsAdapter():RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter():PagingDataAdapter<NewsEntity,NewsAdapter.NewsViewHolder>(NEWS_DIFF_CALLBACK) {
 
     private val news = ArrayList<NewsEntity>()
 
@@ -41,6 +43,16 @@ class NewsAdapter():RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
                 tvTitle.text = news.title
                 tvPublished.text = news.author
             }
+        }
+    }
+
+    companion object {
+        private val NEWS_DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsEntity>() {
+            override fun areItemsTheSame(oldItem: NewsEntity, newItem: NewsEntity): Boolean =
+                oldItem.title == newItem.title
+
+            override fun areContentsTheSame(oldItem: NewsEntity, newItem: NewsEntity): Boolean =
+                oldItem == newItem
         }
     }
 }

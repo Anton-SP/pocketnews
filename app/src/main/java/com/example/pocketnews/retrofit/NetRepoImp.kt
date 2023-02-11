@@ -2,6 +2,7 @@ package com.example.pocketnews.retrofit
 
 import com.example.pocketnews.data.NewsEntity
 import com.example.pocketnews.data.NewsRepo
+import com.example.pocketnews.data.pagin.NewsPagingSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,8 +24,12 @@ private val redditApi = Retrofit.Builder()
 class NetRepoImp : NewsRepo {
 
 
-    override suspend fun getNews(): List<NewsEntity> =
-        redditApi.getNews().data.children.map { NewsEntity(it.data.author, it.data.title,it.data.name) }
+    override suspend fun getNews(): List<NewsEntity> = withContext(Dispatchers.IO){
+        redditApi.getNews("start").data.children.map { NewsEntity(it.data.author, it.data.title,it.data.name) }
+    }
+
+    override fun newsPagingSource() = NewsPagingSource()
+
 }
 
 
