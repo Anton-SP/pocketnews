@@ -24,7 +24,7 @@ class NetRepoImp : NewsRepo {
 
 
     override suspend fun getNews(): List<NewsEntity> =
-        redditApi.getNews().data.children.map { NewsEntity(it.data.author, it.data.title) }
+        redditApi.getNews().data.children.map { NewsEntity(it.data.author, it.data.title,it.data.name) }
 }
 
 

@@ -30,6 +30,7 @@ data class NewsEntityDto(
 )
 
 data class Data(
+    val after:String,
     val children: List<Children>
 )
 
@@ -40,7 +41,8 @@ data class Children(
 
 data class Data2(
     val title: String,
-    val author: String
+    val author: String,
+    val name: String //id for pagging
 )
 
 
