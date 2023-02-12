@@ -10,9 +10,6 @@ import com.example.pocketnews.databinding.ItemNewsBinding
 
 class NewsAdapter : PagingDataAdapter<NewsEntity, NewsAdapter.NewsViewHolder>(NEWS_DIFF_CALLBACK) {
 
-    //private val news = ArrayList<NewsEntity>()
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val binding = ItemNewsBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -21,25 +18,14 @@ class NewsAdapter : PagingDataAdapter<NewsEntity, NewsAdapter.NewsViewHolder>(NE
         return holder
     }
 
-    /* override fun getItemCount(): Int {
-        return news.size
-     }*/
-
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val tile = getItem(position)
         if (tile != null) {
             holder.bind(tile)
         }
-        //holder.bind(news = news[position])
     }
 
-    fun submitList(data: List<NewsEntity>) {
-        //  news.addAll(data)
-        notifyDataSetChanged()
-    }
-
-
-    inner class NewsViewHolder(private val binding: ItemNewsBinding) :
+      inner class NewsViewHolder(private val binding: ItemNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(news: NewsEntity) {
