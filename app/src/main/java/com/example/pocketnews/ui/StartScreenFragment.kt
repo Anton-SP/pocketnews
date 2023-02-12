@@ -1,6 +1,7 @@
 package com.example.pocketnews.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.map
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -39,25 +41,37 @@ class StartScreenFragment : Fragment(R.layout.fragment_start_screen) {
         super.onViewCreated(view, savedInstanceState)
       //  initRecycler()
 
-        val item = newsViewModel.items
+
         initRecycler()
+        newsViewModel.getPagingFlow()
+        getdata()
+
+
      //   binding.bindAdapter(newsAdapter = adapter)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                item.collect{
-                    adapter.submitData(it)
-                  //  adapter.notifyDataSetChanged()
-                }
-            }
-        }
+
 
        // getList()
       //  collectListFlow()
 
         binding.fabUpload.setOnClickListener {
+            Log.d("HAPPY","fab press")
+            getdata()
         //    getItems()
             //getList()
+        }
+    }
+
+    private fun getdata() {
+     //   val item = newsViewModel.items
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                newsViewModel.items.collectLatest{
+
+                    adapter.submitData(it)
+                    //  adapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 

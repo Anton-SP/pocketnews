@@ -1,5 +1,6 @@
 package com.example.pocketnews.data.pagin
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.pocketnews.data.NewsEntity
@@ -29,8 +30,9 @@ class NewsPagingSource : PagingSource<String, NewsEntity>() {
     override suspend fun load(params: LoadParams<String>): LoadResult<String, NewsEntity> {
         val start = params.key ?: STARTING_KEY
 
-        val newsDTO = redditApi.getNews(start)
+        var newsDTO = redditApi.getNews(start)
 
+       // Log.d("HAPPY", start +" and " + newsDTO.data.after)
 
         return LoadResult.Page(
             data = newsDTO.data.children.map {
@@ -40,6 +42,7 @@ class NewsPagingSource : PagingSource<String, NewsEntity>() {
                     it.data.name
                 )
             },
+
            /* nextKey = when (start) {
                 STARTING_KEY -> newsDTO.data.after
                 else -> newsDTO.data.after

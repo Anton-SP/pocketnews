@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketnews.data.NewsEntity
 import com.example.pocketnews.databinding.ItemNewsBinding
 
-class NewsAdapter():PagingDataAdapter<NewsEntity,NewsAdapter.NewsViewHolder>(NEWS_DIFF_CALLBACK) {
+class NewsAdapter : PagingDataAdapter<NewsEntity, NewsAdapter.NewsViewHolder>(NEWS_DIFF_CALLBACK) {
 
-    private val news = ArrayList<NewsEntity>()
-
+    //private val news = ArrayList<NewsEntity>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -22,23 +21,28 @@ class NewsAdapter():PagingDataAdapter<NewsEntity,NewsAdapter.NewsViewHolder>(NEW
         return holder
     }
 
-    override fun getItemCount(): Int {
-       return news.size
-    }
+    /* override fun getItemCount(): Int {
+        return news.size
+     }*/
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(news = news[position])
+        val tile = getItem(position)
+        if (tile != null) {
+            holder.bind(tile)
+        }
+        //holder.bind(news = news[position])
     }
 
     fun submitList(data: List<NewsEntity>) {
-        news.addAll(data)
+        //  news.addAll(data)
         notifyDataSetChanged()
     }
 
 
-    inner class NewsViewHolder(private val binding: ItemNewsBinding):RecyclerView.ViewHolder(binding.root){
+    inner class NewsViewHolder(private val binding: ItemNewsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(news:NewsEntity) {
+        fun bind(news: NewsEntity) {
             with(binding) {
                 tvTitle.text = news.title
                 tvPublished.text = news.author
@@ -49,7 +53,7 @@ class NewsAdapter():PagingDataAdapter<NewsEntity,NewsAdapter.NewsViewHolder>(NEW
     companion object {
         private val NEWS_DIFF_CALLBACK = object : DiffUtil.ItemCallback<NewsEntity>() {
             override fun areItemsTheSame(oldItem: NewsEntity, newItem: NewsEntity): Boolean =
-                oldItem.title == newItem.title
+                oldItem.name == newItem.name
 
             override fun areContentsTheSame(oldItem: NewsEntity, newItem: NewsEntity): Boolean =
                 oldItem == newItem
